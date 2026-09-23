@@ -1,0 +1,137 @@
+# =========================================================
+#  ShipTogether — .gitignore
+# =========================================================
+
+# ---------- Build output ----------
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+publish/
+dist/
+*.dll
+*.pdb
+*.mdb
+*.exe
+*.zip
+*.7z
+
+# ---------- NuGet ----------
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+!**/[Pp]ackages/build/
+project.lock.json
+project.fragment.lock.json
+*.nuget.props
+*.nuget.targets
+
+# ---------- MSBuild / .NET ----------
+*.binlog
+*.tlog
+*.cache
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_i.c
+*_p.c
+*_h.h
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+Directory.Build.user.props
+# Local overrides (ex.: GamePath)
+*.local.props
+*.user.props
+
+# ---------- Visual Studio ----------
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.VC.db
+*.VC.VC.opendb
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.psess
+*.vsp
+*.vspx
+*.sap
+*.coverage
+*.coveragexml
+TestResults/
+[Tt]est[Rr]esult*/
+
+# ---------- JetBrains Rider / ReSharper ----------
+.idea/
+*.sln.iml
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# ---------- VS Code ----------
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+
+# ---------- Decompiled / extracted game content (never commit game assets) ----------
+decompiled/
+extracted/
+icons_extraidos/
+*.cs.decompiled
+assembly_valheim*.dll
+assembly_utils*.dll
+publicized_assemblies/
+
+# ---------- BepInEx runtime files ----------
+BepInEx/
+LogOutput.log
+*.cfg
+
+# ---------- Thunderstore packaging output ----------
+Thunderstore/*.zip
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*~
+*.swp
