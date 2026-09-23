@@ -1,13 +1,13 @@
-# ShipTogether
+# SailingTogether
 
 A [BepInEx](https://github.com/BepInEx/BepInEx) mod for **Valheim** that adds **cooperative rowing**.
-In vanilla, only the player at the helm can move the ship. With ShipTogether, every player
+In vanilla, only the player at the helm can move the ship. With SailingTogether, every player
 **sitting on a ship bench** can row with **W** (forward) and **S** (backward) instead of standing up.
 **Jump** still stands you up.
 
 ## Requirements
 
-> **BepInEx is required.** ShipTogether is a BepInEx plugin and does nothing without it.
+> **BepInEx is required.** SailingTogether is a BepInEx plugin and does nothing without it.
 
 - Valheim (Steam)
 - [BepInExPack Valheim](https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/) (BepInEx 5.4.x) installed in the game folder
@@ -16,8 +16,8 @@ In vanilla, only the player at the helm can move the ship. With ShipTogether, ev
 ## Installation
 
 1. Install **BepInExPack Valheim** and run the game once, so the `BepInEx` folder is created.
-2. Copy `ShipTogether.dll` to `<Valheim>\BepInEx\plugins\ShipTogether\`.
-3. Start the game. The log (`BepInEx\LogOutput.log`) should show `ShipTogether ... carregado.`
+2. Copy `SailingTogether.dll` to `<Valheim>\BepInEx\plugins\SailingTogether\`.
+3. Start the game. The log (`BepInEx\LogOutput.log`) should show `SailingTogether ... carregado.`
 
 ## How it works
 
@@ -74,7 +74,7 @@ config of whoever currently owns the ship.
 
 ## Configuration
 
-`BepInEx\config\farias.ShipTogether.cfg` (created on first run):
+`BepInEx\config\farias.SailingTogether.cfg` (created on first run):
 
 | Section | Key | Default | Description |
 |---|---|---|---|
@@ -105,7 +105,7 @@ Requires the .NET SDK. BepInEx must be installed in the game folder, because the
 dotnet build -c Release -p:GamePath="C:\Path\To\Valheim"
 ```
 
-The DLL is copied to `<Valheim>\BepInEx\plugins\ShipTogether\` after the build.
+The DLL is copied to `<Valheim>\BepInEx\plugins\SailingTogether\` after the build.
 Use `-p:DeployToGame=false` to skip copying.
 
 ## Support
@@ -118,7 +118,7 @@ https://buymeacoffee.com/chrystianfarias
 
 ## License
 
-**ShipTogether** — Copyright (c) 2025 Chrystian Farias.
+**SailingTogether** — Copyright (c) 2025 Chrystian Farias.
 
 Licensed under [Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
 You may share and adapt this work with attribution, **for non-commercial purposes only**.

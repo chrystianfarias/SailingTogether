@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ShipTogether
+namespace SailingTogether
 {
     /// <summary>
     /// Mini-mapa do barco visto de cima (proa para cima).
@@ -44,7 +44,7 @@ namespace ShipTogether
         {
             if (Event.current.type != EventType.Repaint)
                 return;
-            if (!ShipTogetherPlugin.Enabled.Value || !ShipTogetherPlugin.ShowHud.Value)
+            if (!SailingTogetherPlugin.Enabled.Value || !SailingTogetherPlugin.ShowHud.Value)
                 return;
 
             Player player = Player.m_localPlayer;
@@ -71,7 +71,7 @@ namespace ShipTogether
 
             EnsureResources();
             GameSprites.TryLoad();
-            float scale = Mathf.Max(1f, Screen.height / 1080f) * ShipTogetherPlugin.HudScale.Value;
+            float scale = Mathf.Max(1f, Screen.height / 1080f) * SailingTogetherPlugin.HudScale.Value;
             GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1f));
 
             BuildViews(ship, layout, player, pilot);
@@ -150,8 +150,8 @@ namespace ShipTogether
             float screenW = Screen.width / scale;
             float screenH = Screen.height / scale;
             Rect hull = new Rect(
-                screenW - ShipTogetherPlugin.HudOffsetX.Value - (areaW + hullW) * 0.5f,
-                screenH - ShipTogetherPlugin.HudOffsetY.Value - hullH,
+                screenW - SailingTogetherPlugin.HudOffsetX.Value - (areaW + hullW) * 0.5f,
+                screenH - SailingTogetherPlugin.HudOffsetY.Value - hullH,
                 hullW, hullH);
 
             if (GameSprites.Ship)

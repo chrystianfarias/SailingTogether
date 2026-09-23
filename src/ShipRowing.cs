@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
-namespace ShipTogether
+namespace SailingTogether
 {
     /// <summary>
     /// Lado do dono do barco (quem simula a física): soma o input de cada remador,
@@ -27,7 +27,7 @@ namespace ShipTogether
 
         private static void Postfix(Ship __instance, float fixedDeltaTime)
         {
-            if (!ShipTogetherPlugin.Enabled.Value)
+            if (!SailingTogetherPlugin.Enabled.Value)
                 return;
 
             ZNetView nview = s_nview(__instance);
@@ -86,14 +86,14 @@ namespace ShipTogether
             stats.Applied = true;
 
             // Empurrão: fração da força do remo vanilla (m_backwardForce é por barco).
-            float power = __instance.m_backwardForce * ShipTogetherPlugin.PowerPerRower.Value;
+            float power = __instance.m_backwardForce * SailingTogetherPlugin.PowerPerRower.Value;
             body.AddForce(shipTransform.forward * (thrust * power * fixedDeltaTime), ForceMode.VelocityChange);
 
             // Giro: remar para frente do lado direito empurra a proa para a esquerda (yaw negativo no Unity).
             Vector3 up = shipTransform.up;
             float yawRate = stats.YawRate;
-            float delta = -turn * ShipTogetherPlugin.TurnAccelPerRower.Value * fixedDeltaTime;
-            float max = ShipTogetherPlugin.MaxTurnRate.Value;
+            float delta = -turn * SailingTogetherPlugin.TurnAccelPerRower.Value * fixedDeltaTime;
+            float max = SailingTogetherPlugin.MaxTurnRate.Value;
             if (delta > 0f)
                 delta = Mathf.Min(delta, Mathf.Max(0f, max - yawRate));
             else if (delta < 0f)

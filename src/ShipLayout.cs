@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 
-namespace ShipTogether
+namespace SailingTogether
 {
     internal static class ShipAccess
     {
@@ -11,7 +11,7 @@ namespace ShipTogether
 
         internal static float SideOf(float localX)
         {
-            return Mathf.Abs(localX) < ShipTogetherPlugin.CenterDeadZone.Value ? 0f : Mathf.Sign(localX);
+            return Mathf.Abs(localX) < SailingTogetherPlugin.CenterDeadZone.Value ? 0f : Mathf.Sign(localX);
         }
 
         internal static bool RowingAllowed(Ship.Speed speed)
@@ -21,9 +21,9 @@ namespace ShipTogether
                 case Ship.Speed.Slow:
                     return true;
                 case Ship.Speed.Back:
-                    return ShipTogetherPlugin.RowInBack.Value;
+                    return SailingTogetherPlugin.RowInBack.Value;
                 case Ship.Speed.Stop:
-                    return ShipTogetherPlugin.RowInStop.Value;
+                    return SailingTogetherPlugin.RowInStop.Value;
                 default:
                     return false;
             }

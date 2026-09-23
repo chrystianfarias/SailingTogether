@@ -1,7 +1,7 @@
 using HarmonyLib;
 using UnityEngine;
 
-namespace ShipTogether
+namespace SailingTogether
 {
     /// <summary>
     /// Lado do cliente: quando o jogador local está sentado num banco do barco,
@@ -10,8 +10,8 @@ namespace ShipTogether
     /// </summary>
     internal static class RowerInput
     {
-        internal static readonly int RowHash = "ShipTogether_Row".GetStableHashCode();
-        internal static readonly int SeatedHash = "ShipTogether_Seated".GetStableHashCode();
+        internal static readonly int RowHash = "SailingTogether_Row".GetStableHashCode();
+        internal static readonly int SeatedHash = "SailingTogether_Seated".GetStableHashCode();
 
         private static float s_lastSent;
         private static bool s_lastSeated;
@@ -59,7 +59,7 @@ namespace ShipTogether
             if (ship == s_seatedShip)
                 return;
             s_seatedShip = ship;
-            if (ship && ShipTogetherPlugin.ShowHint.Value)
+            if (ship && SailingTogetherPlugin.ShowHint.Value)
                 player.Message(MessageHud.MessageType.TopLeft, "Remo: [W] frente  [S] trás  —  [Pular] levantar");
         }
     }
@@ -72,7 +72,7 @@ namespace ShipTogether
             if (__instance != Player.m_localPlayer)
                 return;
 
-            Ship ship = ShipTogetherPlugin.Enabled.Value ? RowerInput.GetSeatedShip(__instance) : null;
+            Ship ship = SailingTogetherPlugin.Enabled.Value ? RowerInput.GetSeatedShip(__instance) : null;
             RowerInput.OnSeatChanged(__instance, ship);
 
             float row = 0f;

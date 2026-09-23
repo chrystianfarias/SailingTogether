@@ -2,13 +2,13 @@ using BepInEx;
 using BepInEx.Configuration;
 using HarmonyLib;
 
-namespace ShipTogether
+namespace SailingTogether
 {
     [BepInPlugin(ModGuid, ModName, ModVersion)]
-    public class ShipTogetherPlugin : BaseUnityPlugin
+    public class SailingTogetherPlugin : BaseUnityPlugin
     {
-        public const string ModGuid = "farias.ShipTogether";
-        public const string ModName = "ShipTogether";
+        public const string ModGuid = "farias.SailingTogether";
+        public const string ModName = "SailingTogether";
         public const string ModVersion = "0.1.0";
 
         internal static ConfigEntry<bool> Enabled;
@@ -79,7 +79,7 @@ namespace ShipTogether
             gameObject.AddComponent<RowingHud>();
 
             _harmony = new Harmony(ModGuid);
-            _harmony.PatchAll(typeof(ShipTogetherPlugin).Assembly);
+            _harmony.PatchAll(typeof(SailingTogetherPlugin).Assembly);
             Logger.LogInfo($"{ModName} {ModVersion} carregado.");
         }
 

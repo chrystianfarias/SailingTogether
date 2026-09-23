@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace ShipTogether
+namespace SailingTogether
 {
     /// <summary>
     /// Ícones do próprio jogo usados na HUD: por padrão "ship_top" (barco visto de cima, o mesmo
@@ -31,18 +31,18 @@ namespace ShipTogether
                 return;
             s_loaded = true;
 
-            Ship = Find(ShipTogetherPlugin.HudShipSprite.Value, out Image shipImage);
+            Ship = Find(SailingTogetherPlugin.HudShipSprite.Value, out Image shipImage);
             ShipColor = shipImage ? shipImage.color : DefaultShipColor;
             // "ship_top" tem sombra/margem em volta: medido no PNG exportado (171x256).
             ShipVisible = Ship && Ship.name == "ship_top"
                 ? new Rect(61f / 171f, 29f / 256f, 49f / 171f, 173f / 256f)
                 : new Rect(0f, 0f, 1f, 1f);
 
-            Arrow = Find(ShipTogetherPlugin.HudArrowSprite.Value, out _);
+            Arrow = Find(SailingTogetherPlugin.HudArrowSprite.Value, out _);
 
-            Oar = Find(ShipTogetherPlugin.HudOarSprite.Value, out _);
+            Oar = Find(SailingTogetherPlugin.HudOarSprite.Value, out _);
 
-            ShipTogetherPlugin.Log.LogInfo($"HUD: barco = '{(Ship ? Ship.name : "desenho próprio")}', seta = '{(Arrow ? Arrow.name : "desenho próprio")}', remo = '{(Oar ? Oar.name : "nenhum")}'");
+            SailingTogetherPlugin.Log.LogInfo($"HUD: barco = '{(Ship ? Ship.name : "desenho próprio")}', seta = '{(Arrow ? Arrow.name : "desenho próprio")}', remo = '{(Oar ? Oar.name : "nenhum")}'");
         }
 
         private static Sprite Find(string spriteName, out Image hudImage)
@@ -72,7 +72,7 @@ namespace ShipTogether
                     return sprite;
             }
 
-            ShipTogetherPlugin.Log.LogWarning($"HUD: sprite '{spriteName}' não encontrado.");
+            SailingTogetherPlugin.Log.LogWarning($"HUD: sprite '{spriteName}' não encontrado.");
             return null;
         }
 

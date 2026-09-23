@@ -3,7 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 
-namespace ShipTogether
+namespace SailingTogether
 {
     /// <summary>
     /// Utilitário para testar sozinho: cria remadores simulados nos assentos reais do barco
@@ -33,20 +33,20 @@ namespace ShipTogether
 
         internal static IEnumerable<SimSeat> GetSimulatedSeats(Ship ship)
         {
-            if (!s_simActive || !ShipTogetherPlugin.DebugTool.Value || ship != s_ship || !s_ship)
+            if (!s_simActive || !SailingTogetherPlugin.DebugTool.Value || ship != s_ship || !s_ship)
                 return s_none;
             return s_seats;
         }
 
         private void Update()
         {
-            if (!ShipTogetherPlugin.DebugTool.Value)
+            if (!SailingTogetherPlugin.DebugTool.Value)
             {
                 IsOpen = false;
                 return;
             }
 
-            if (ShipTogetherPlugin.DebugHotkey.Value.IsDown() && Player.m_localPlayer
+            if (SailingTogetherPlugin.DebugHotkey.Value.IsDown() && Player.m_localPlayer
                 && !Console.IsVisible() && !(Chat.instance && Chat.instance.HasFocus()))
             {
                 IsOpen = !IsOpen;
@@ -98,7 +98,7 @@ namespace ShipTogether
 
         private void OnGUI()
         {
-            if (!ShipTogetherPlugin.DebugTool.Value || !Player.m_localPlayer)
+            if (!SailingTogetherPlugin.DebugTool.Value || !Player.m_localPlayer)
                 return;
 
             float scale = Mathf.Max(1f, Screen.height / 1080f);
@@ -106,12 +106,12 @@ namespace ShipTogether
 
             if (IsOpen)
             {
-                _window = GUILayout.Window(0x5A17, _window, DrawWindow, "ShipTogether — simulador de remadores");
+                _window = GUILayout.Window(0x5A17, _window, DrawWindow, "SailingTogether — simulador de remadores");
             }
             else if (s_simActive && s_ship && s_seats.Any(s => s.Row != 0f))
             {
                 GUI.Label(new Rect(10f, 10f, 600f, 22f),
-                    $"ShipTogether sim: {StatusLine()}   [{ShipTogetherPlugin.DebugHotkey.Value}] painel");
+                    $"SailingTogether sim: {StatusLine()}   [{SailingTogetherPlugin.DebugHotkey.Value}] painel");
             }
         }
 
@@ -163,7 +163,7 @@ namespace ShipTogether
             }
 
             GUILayout.Space(6f);
-            GUILayout.Label($"[{ShipTogetherPlugin.DebugHotkey.Value}] fecha o painel (os valores continuam valendo).");
+            GUILayout.Label($"[{SailingTogetherPlugin.DebugHotkey.Value}] fecha o painel (os valores continuam valendo).");
             GUI.DragWindow();
         }
 

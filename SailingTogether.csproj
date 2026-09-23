@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
-    <AssemblyName>ShipTogether</AssemblyName>
-    <RootNamespace>ShipTogether</RootNamespace>
+    <AssemblyName>SailingTogether</AssemblyName>
+    <RootNamespace>SailingTogether</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Nullable>disable</Nullable>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
@@ -35,9 +35,9 @@
   </ItemGroup>
 
   <Target Name="DeployPlugin" AfterTargets="Build" Condition="'$(DeployToGame)' == 'true'">
-    <MakeDir Directories="$(BepInExPath)\plugins\ShipTogether" />
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BepInExPath)\plugins\ShipTogether" />
-    <Message Importance="high" Text="ShipTogether -> $(BepInExPath)\plugins\ShipTogether" />
+    <MakeDir Directories="$(BepInExPath)\plugins\SailingTogether" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BepInExPath)\plugins\SailingTogether" />
+    <Message Importance="high" Text="SailingTogether -> $(BepInExPath)\plugins\SailingTogether" />
   </Target>
 
 </Project>
