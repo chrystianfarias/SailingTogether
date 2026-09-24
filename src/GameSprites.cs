@@ -4,9 +4,9 @@ using UnityEngine.UI;
 namespace SailingTogether
 {
     /// <summary>
-    /// Ícones do próprio jogo usados na HUD: por padrão "ship_top" (barco visto de cima, o mesmo
-    /// do indicador de vento) e "winddirection" (seta do vento). Ambos são desenhados na
-    /// orientação nativa (proa/ponta para cima). Os nomes vêm da config [Hud] ShipSprite / ArrowSprite.
+    /// The game's own icons used by the HUD: by default "ship_top" (top-down ship, the same one
+    /// used by the wind indicator), "winddirection" (wind arrow) and "ship_rudder_icon" (oar).
+    /// All are drawn in their native orientation (bow/tip up). Names come from the [Hud] config.
     /// </summary>
     internal static class GameSprites
     {
@@ -16,7 +16,7 @@ namespace SailingTogether
 
         internal static Sprite Ship;
         internal static Color ShipColor = DefaultShipColor;
-        /// <summary>Área da forma visível dentro do sprite do barco (0..1, origem no topo-esquerdo).</summary>
+        /// <summary>Area of the visible shape inside the ship sprite (0..1, top-left origin).</summary>
         internal static Rect ShipVisible = new Rect(0f, 0f, 1f, 1f);
 
         internal static Sprite Arrow;
@@ -33,7 +33,7 @@ namespace SailingTogether
 
             Ship = Find(SailingTogetherPlugin.HudShipSprite.Value, out Image shipImage);
             ShipColor = shipImage ? shipImage.color : DefaultShipColor;
-            // "ship_top" tem sombra/margem em volta: medido no PNG exportado (171x256).
+            // "ship_top" has a shadow/margin around it: measured on the exported PNG (171x256).
             ShipVisible = Ship && Ship.name == "ship_top"
                 ? new Rect(61f / 171f, 29f / 256f, 49f / 171f, 173f / 256f)
                 : new Rect(0f, 0f, 1f, 1f);
@@ -42,7 +42,7 @@ namespace SailingTogether
 
             Oar = Find(SailingTogetherPlugin.HudOarSprite.Value, out _);
 
-            SailingTogetherPlugin.Log.LogInfo($"HUD: barco = '{(Ship ? Ship.name : "desenho próprio")}', seta = '{(Arrow ? Arrow.name : "desenho próprio")}', remo = '{(Oar ? Oar.name : "nenhum")}'");
+            SailingTogetherPlugin.Log.LogInfo($"HUD: ship = '{(Ship ? Ship.name : "built-in")}', arrow = '{(Arrow ? Arrow.name : "built-in")}', oar = '{(Oar ? Oar.name : "none")}'");
         }
 
         private static Sprite Find(string spriteName, out Image hudImage)
@@ -52,7 +52,7 @@ namespace SailingTogether
                 return null;
             spriteName = spriteName.Trim();
 
-            // Preferência: a instância usada no HUD de navegação (traz a cor do jogo).
+            // Prefer the instance used by the sailing HUD (it carries the game's color).
             Hud hud = Hud.instance;
             if (hud && hud.m_shipHudRoot)
             {
@@ -72,21 +72,21 @@ namespace SailingTogether
                     return sprite;
             }
 
-            SailingTogetherPlugin.Log.LogWarning($"HUD: sprite '{spriteName}' não encontrado.");
+            SailingTogetherPlugin.Log.LogWarning($"HUD: sprite '{spriteName}' not found.");
             return null;
         }
 
         /// <summary>
-        /// Desenha um sprite (de atlas) no IMGUI, girado em volta do centro.
-        /// <paramref name="angle"/> em graus, sentido horário na tela; <paramref name="guiScale"/>
-        /// é a escala aplicada em GUI.matrix.
+        /// Draws an (atlas) sprite with IMGUI, rotated around its center.
+        /// <paramref name="angle"/> is in degrees, clockwise on screen; <paramref name="guiScale"/>
+        /// is the scale applied to GUI.matrix.
         /// </summary>
         internal static void Draw(Rect rect, Sprite sprite, float angle, Color color, float guiScale)
         {
             Draw(rect, sprite, angle, rect.center, color, guiScale);
         }
 
-        /// <summary>Igual a <see cref="Draw(Rect, Sprite, float, Color, float)"/>, girando em volta de <paramref name="pivotPoint"/>.</summary>
+        /// <summary>Same as <see cref="Draw(Rect, Sprite, float, Color, float)"/>, rotating around <paramref name="pivotPoint"/>.</summary>
         internal static void Draw(Rect rect, Sprite sprite, float angle, Vector2 pivotPoint, Color color, float guiScale)
         {
             Texture texture = sprite.texture;

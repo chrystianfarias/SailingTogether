@@ -31,8 +31,8 @@ namespace SailingTogether
     }
 
     /// <summary>
-    /// Geometria de um tipo de barco no espaço local do Ship: bancos, leme e contorno do casco.
-    /// Cacheado por prefab (todas as instâncias do mesmo barco são iguais).
+    /// Geometry of a ship type in the Ship's local space: benches, helm and hull outline.
+    /// Cached per prefab (every instance of the same ship is identical).
     /// </summary>
     internal class ShipLayout
     {
@@ -72,7 +72,7 @@ namespace SailingTogether
                 Transform point = chair.m_attachPoint ? chair.m_attachPoint : chair.transform;
                 layout.Seats.Add(new Seat { Local = t.InverseTransformPoint(point.position) });
             }
-            // Da proa para a popa, esquerda antes da direita.
+            // Bow to stern, left before right.
             layout.Seats.Sort((a, b) =>
                 Mathf.Abs(a.Local.z - b.Local.z) > 0.05f ? b.Local.z.CompareTo(a.Local.z) : a.Local.x.CompareTo(b.Local.x));
 
@@ -83,7 +83,7 @@ namespace SailingTogether
                 layout.HelmLocal = t.InverseTransformPoint(helm.position);
             }
 
-            // Contorno: caixa de flutuação, expandida para conter bancos e leme.
+            // Outline: the float collider box, expanded to contain the benches and the helm.
             layout.MinX = layout.MinZ = float.MaxValue;
             layout.MaxX = layout.MaxZ = float.MinValue;
             if (ship.m_floatCollider)
@@ -120,7 +120,7 @@ namespace SailingTogether
             for (int i = 0; i < Seats.Count; i++)
             {
                 Vector3 d = Seats[i].Local - local;
-                d.y *= 0.5f; // animação de sentar desloca mais na vertical
+                d.y *= 0.5f; // the sitting animation offsets more vertically
                 float dist = d.sqrMagnitude;
                 if (dist < bestDist)
                 {

@@ -4,9 +4,9 @@ using UnityEngine;
 namespace SailingTogether
 {
     /// <summary>
-    /// Lado do cliente: quando o jogador local está sentado num banco do barco,
-    /// W/S deixam de levantá-lo e passam a ser o input do remo. O valor é escrito
-    /// no ZDO do próprio Player (que o cliente já é dono), e assim chega ao dono do barco.
+    /// Client side: while the local player is sitting on a ship bench, W/S no longer
+    /// stand them up and become the rowing input instead. The value is written to the
+    /// player's own ZDO (already owned by this client), which syncs it to the ship owner.
     /// </summary>
     internal static class RowerInput
     {
@@ -17,7 +17,7 @@ namespace SailingTogether
         private static bool s_lastSeated;
         private static Ship s_seatedShip;
 
-        /// <summary>Barco em cujo banco o jogador está sentado (exclui o leme).</summary>
+        /// <summary>Ship whose bench the player is sitting on (excludes the helm).</summary>
         internal static Ship GetSeatedShip(Player player)
         {
             if (!player.IsAttachedToShip() || player.GetDoodadController() != null)
@@ -42,7 +42,7 @@ namespace SailingTogether
             s_lastSeated = seated;
         }
 
-        /// <summary>Lê o estado de remo de qualquer jogador (sincronizado via ZDO).</summary>
+        /// <summary>Reads the rowing state of any player (synced through their ZDO).</summary>
         internal static bool TryGetRower(Player player, out float row)
         {
             row = 0f;
@@ -60,7 +60,7 @@ namespace SailingTogether
                 return;
             s_seatedShip = ship;
             if (ship && SailingTogetherPlugin.ShowHint.Value)
-                player.Message(MessageHud.MessageType.TopLeft, "Remo: [W] frente  [S] trás  —  [Pular] levantar");
+                player.Message(MessageHud.MessageType.TopLeft, "Rowing: [W] forward  [S] backward  —  [Jump] stand up");
         }
     }
 
@@ -79,7 +79,7 @@ namespace SailingTogether
             if (ship)
             {
                 row = movedir.z;
-                // Zera o movimento para o vanilla não chamar AttachStop() (pular continua levantando).
+                // Clear the movement so vanilla does not call AttachStop() (jumping still stands up).
                 movedir = Vector3.zero;
             }
             RowerInput.Send(__instance, row, ship);

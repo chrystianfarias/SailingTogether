@@ -4,9 +4,9 @@ using UnityEngine;
 namespace SailingTogether
 {
     /// <summary>
-    /// Mini-mapa do barco visto de cima (proa para cima).
-    ///   Piloto (no leme): todos os bancos, ocupação e direção do remo de cada remador.
-    ///   Remador: apenas o próprio banco e a direção do seu remo.
+    /// Top-down ship HUD (bow up).
+    ///   Helmsman: every bench, who is sitting and each rower's direction.
+    ///   Rower: only their own bench and their rowing direction.
     /// </summary>
     internal class RowingHud : MonoBehaviour
     {
@@ -126,7 +126,7 @@ namespace SailingTogether
 
         private void Draw(Ship ship, ShipLayout layout, bool pilot, float scale)
         {
-            // Altura fixa; largura pela proporção do ícone (não estica o sprite do jogo).
+            // Fixed height; width follows the icon's aspect ratio (never stretch the game sprite).
             float hullH = MaxHullHeight;
             float hullW;
             if (GameSprites.Ship)
@@ -156,7 +156,7 @@ namespace SailingTogether
 
             if (GameSprites.Ship)
             {
-                // Encaixa a forma visível do ícone (sem a sombra) no contorno do casco.
+                // Fit the icon's visible shape (without the shadow) to the hull outline.
                 Rect visible = GameSprites.ShipVisible;
                 float iconW = hullW / visible.width;
                 float iconH = hullH / visible.height;
@@ -212,7 +212,7 @@ namespace SailingTogether
                 if (!rowing)
                     continue;
 
-                // Seta do lado de fora do casco, na altura do banco (banco central: acima dele).
+                // Arrow outside the hull, level with the bench (center bench: above it).
                 float side = ShipAccess.SideOf(layout.Seats[i].Local.x);
                 Vector2 a = side > 0f ? new Vector2(hull.xMax + ArrowGap + arrowW * 0.5f, c.y)
                     : side < 0f ? new Vector2(hull.x - ArrowGap - arrowW * 0.5f, c.y)
@@ -232,8 +232,8 @@ namespace SailingTogether
         }
 
         /// <summary>
-        /// Remo em pé sobre o banco, balançando como o remo do leme no barco vanilla
-        /// (Ship.UpdateRudder): para frente sin(t*6)*20°, para trás sin(-t*3)*40°. Parado: em repouso.
+        /// Upright oar on the bench, swaying like the vanilla helm oar (Ship.UpdateRudder):
+        /// forward sin(t*6)*20°, backward sin(-t*3)*40°. Idle: at rest.
         /// </summary>
         private static void DrawOar(Vector2 seat, float row, bool allowed, float scale)
         {
@@ -270,7 +270,7 @@ namespace SailingTogether
                 float d = Mathf.Sqrt(u * u + v * v);
                 return Mathf.Min(Coverage(0.46f - d, 32), Coverage(d - 0.32f, 32));
             });
-            // Triângulo: (u, v) em [-0.5, 0.5], v para cima.
+            // Triangle: (u, v) in [-0.5, 0.5], v up.
             _arrowUp = Procedural(32, (u, v) => Coverage(Mathf.Min(v + 0.4f, (0.4f - v) * 0.5f - Mathf.Abs(u) * 1.0f), 32));
             _arrowDown = Procedural(32, (u, v) => Coverage(Mathf.Min(-v + 0.4f, (0.4f + v) * 0.5f - Mathf.Abs(u) * 1.0f), 32));
 
@@ -287,14 +287,14 @@ namespace SailingTogether
             Color32[] pixels = new Color32[w * h];
             for (int y = 0; y < h; y++)
             {
-                float t = (y + 0.5f) / h * 2f - 1f; // -1 popa, +1 proa
+                float t = (y + 0.5f) / h * 2f - 1f; // -1 stern, +1 bow
                 float half = t >= 0f
                     ? Mathf.Pow(Mathf.Max(0f, 1f - t * t), 0.6f)
                     : Mathf.Pow(Mathf.Max(0f, 1f - Mathf.Pow(-t, 2.5f)), 0.55f);
                 for (int x = 0; x < w; x++)
                 {
                     float u = Mathf.Abs((x + 0.5f) / w * 2f - 1f);
-                    float edgePx = (half - u) * w * 0.5f; // distância até a borda, em pixels
+                    float edgePx = (half - u) * w * 0.5f; // distance to the edge, in pixels
                     Color c;
                     if (edgePx <= -1f)
                         c = Color.clear;
@@ -303,7 +303,7 @@ namespace SailingTogether
                     else
                     {
                         c = HullFill;
-                        // Tábuas do convés e quilha.
+                        // Deck planks and keel.
                         if (Mathf.Repeat(y, 10f) < 1f)
                             c *= 0.85f;
                         if (u * w * 0.5f < 1f)

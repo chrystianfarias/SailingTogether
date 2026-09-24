@@ -37,50 +37,50 @@ namespace SailingTogether
         {
             Log = Logger;
             Enabled = Config.Bind("General", "Enabled", true,
-                "Liga/desliga o remo cooperativo.");
+                "Enables/disables cooperative rowing.");
 
             PowerPerRower = Config.Bind("Rowing", "PowerPerRower", 0.35f,
-                "Força de cada remador, como fração da força do remo do leme (velocidade 1) do próprio barco.");
+                "Force of each rower, as a fraction of the ship's own helm-oar force (speed 1).");
             TurnAccelPerRower = Config.Bind("Rowing", "TurnAccelPerRower", 10f,
-                "Aceleração de giro (graus/s²) gerada por cada remador desbalanceado (ex.: 1 lado remando e o outro não).");
+                "Turn acceleration (degrees/s²) produced by each unbalanced rower (e.g. one side rowing and the other not).");
             MaxTurnRate = Config.Bind("Rowing", "MaxTurnRate", 25f,
-                "Velocidade máxima de giro (graus/s) que os remadores conseguem impor ao barco.");
+                "Maximum turn rate (degrees/s) the rowers can apply to the ship.");
             CenterDeadZone = Config.Bind("Rowing", "CenterDeadZone", 0.4f,
-                "Distância lateral (metros) do eixo central do barco dentro da qual o assento conta como 'centro' (só empurra, não gira).");
+                "Lateral distance (meters) from the ship's centerline within which a bench counts as 'center' (pushes only, does not turn).");
             RowInStop = Config.Bind("Rowing", "RowInStop", false,
-                "Permite remar com o barco parado (velocidade 0), inclusive sem ninguém no leme.");
+                "Allows rowing while the ship is stopped (speed 0), even with nobody at the helm.");
             RowInBack = Config.Bind("Rowing", "RowInBack", true,
-                "Permite remar com o barco em ré.");
+                "Allows rowing while the ship is in reverse.");
             ShowHint = Config.Bind("General", "ShowHint", true,
-                "Mostra a dica de controles ao sentar num banco do barco.");
+                "Shows the controls hint when sitting on a ship bench.");
             ShowHud = Config.Bind("Hud", "ShowShipHud", true,
-                "Mostra o barco visto de cima com os bancos (piloto: todos; remador: só o seu).");
+                "Shows the top-down ship HUD with the benches (helmsman: all benches, rower: only their own).");
             HudScale = Config.Bind("Hud", "Scale", 1f,
-                "Escala do mini-mapa do barco.");
+                "Scale of the ship HUD.");
             HudOffsetX = Config.Bind("Hud", "OffsetX", 30f,
-                "Distância (px em 1080p) da borda direita da tela.");
+                "Distance (px at 1080p) from the right edge of the screen.");
             HudOffsetY = Config.Bind("Hud", "OffsetY", 230f,
-                "Distância (px em 1080p) da borda inferior da tela.");
+                "Distance (px at 1080p) from the bottom edge of the screen.");
             HudShipSprite = Config.Bind("Hud", "ShipSprite", "ship_top",
-                "Nome do sprite do jogo usado como barco (proa para cima). Vazio = desenho próprio.");
+                "Name of the game sprite used for the ship (bow up). Empty = built-in drawing.");
             HudArrowSprite = Config.Bind("Hud", "ArrowSprite", "winddirection",
-                "Nome do sprite do jogo usado como seta (ponta para cima). Vazio = desenho próprio.");
+                "Name of the game sprite used for the arrows (tip up). Empty = built-in drawing.");
             HudOarSprite = Config.Bind("Hud", "OarSprite", "ship_rudder_icon",
-                "Nome do sprite do jogo usado como remo animado em cada banco ocupado. Vazio = sem remo.");
+                "Name of the game sprite used for the animated oar on each occupied bench. Empty = no oar.");
             HudOarSprite.SettingChanged += (_, __) => GameSprites.Reset();
             HudShipSprite.SettingChanged += (_, __) => GameSprites.Reset();
             HudArrowSprite.SettingChanged += (_, __) => GameSprites.Reset();
             DebugTool = Config.Bind("Debug", "SimulatorPanel", false,
-                "Habilita o painel de remadores simulados (F8), para testar sozinho. Padrão: desabilitado.");
+                "Enables the simulated rowers panel (F8), for testing alone. Default: disabled.");
             DebugHotkey = Config.Bind("Debug", "SimulatorHotkey", new KeyboardShortcut(UnityEngine.KeyCode.F8),
-                "Tecla que abre/fecha o painel de remadores simulados.");
+                "Key that opens/closes the simulated rowers panel.");
 
             gameObject.AddComponent<DebugPanel>();
             gameObject.AddComponent<RowingHud>();
 
             _harmony = new Harmony(ModGuid);
             _harmony.PatchAll(typeof(SailingTogetherPlugin).Assembly);
-            Logger.LogInfo($"{ModName} {ModVersion} carregado.");
+            Logger.LogInfo($"{ModName} {ModVersion} loaded.");
         }
 
         private void OnDestroy()

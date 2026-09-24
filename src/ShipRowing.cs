@@ -5,15 +5,15 @@ using UnityEngine;
 namespace SailingTogether
 {
     /// <summary>
-    /// Lado do dono do barco (quem simula a física): soma o input de cada remador,
-    /// separado por lado do barco, e aplica empurrão para frente/trás e giro (yaw).
+    /// Ship owner side (the client simulating the physics): sums every rower's input,
+    /// split by side of the ship, and applies forward/backward thrust and yaw.
     ///
-    /// Cada remador contribui com:
-    ///   empurrão = input                (W = +1, S = -1)
-    ///   giro     = input * lado         (bombordo/esquerda = -1, boreste/direita = +1, centro = 0)
+    /// Each rower contributes:
+    ///   thrust = input                  (W = +1, S = -1)
+    ///   turn   = input * side           (port/left = -1, starboard/right = +1, center = 0)
     ///
-    /// Então: todos com W -> vai reto; só a esquerda com W -> vira para a direita;
-    /// esquerda W + direita S -> gira no próprio eixo.
+    /// So: everyone on W -> goes straight; only the left side on W -> turns right;
+    /// left W + right S -> spins in place.
     /// </summary>
     [HarmonyPatch(typeof(Ship), nameof(Ship.CustomFixedUpdate))]
     internal static class Ship_CustomFixedUpdate_Patch
@@ -85,11 +85,11 @@ namespace SailingTogether
                 return;
             stats.Applied = true;
 
-            // Empurrão: fração da força do remo vanilla (m_backwardForce é por barco).
+            // Thrust: a fraction of the vanilla oar force (m_backwardForce is per ship).
             float power = __instance.m_backwardForce * SailingTogetherPlugin.PowerPerRower.Value;
             body.AddForce(shipTransform.forward * (thrust * power * fixedDeltaTime), ForceMode.VelocityChange);
 
-            // Giro: remar para frente do lado direito empurra a proa para a esquerda (yaw negativo no Unity).
+            // Turn: rowing forward on the right side pushes the bow left (negative yaw in Unity).
             Vector3 up = shipTransform.up;
             float yawRate = stats.YawRate;
             float delta = -turn * SailingTogetherPlugin.TurnAccelPerRower.Value * fixedDeltaTime;
@@ -102,7 +102,7 @@ namespace SailingTogether
                 body.AddTorque(up * (delta * Mathf.Deg2Rad), ForceMode.VelocityChange);
         }
 
-        // Mesmo critério do vanilla para aplicar forças: centro de massa perto da linha d'água.
+        // Same criterion vanilla uses to apply forces: center of mass near the waterline.
         private static bool IsFloating(Ship ship, Rigidbody body)
         {
             Vector3 com = body.worldCenterOfMass;
@@ -112,7 +112,7 @@ namespace SailingTogether
         }
     }
 
-    /// <summary>Último estado calculado da física do remo, para o painel de debug.</summary>
+    /// <summary>Last computed rowing physics state, for the debug panel.</summary>
     internal class RowingStats
     {
         private static readonly RowingStats s_empty = new RowingStats();
@@ -123,7 +123,7 @@ namespace SailingTogether
         public int Rowers;
         public float Thrust, Turn, YawRate;
 
-        // Só guarda o barco em que o jogador local está (o único mostrado no painel).
+        // Only tracks the ship the local player is on (the only one shown in the panel).
         internal static RowingStats For(Ship ship)
         {
             if (ship != Ship.GetLocalShip())

@@ -27,7 +27,7 @@ BepInExPack Valheim is installed automatically as a dependency.
 1. Install **BepInExPack Valheim** and run the game once, so the `BepInEx` folder is created.
 2. Download `SailingTogether-<version>.zip` from [Releases](https://github.com/chrystianfarias/SailingTogether/releases)
    and extract it into the Valheim folder (it contains `BepInEx/plugins/SailingTogether/SailingTogether.dll`).
-3. Start the game. The log (`BepInEx\LogOutput.log`) should show `SailingTogether 1.0.0 carregado.`
+3. Start the game. The log (`BepInEx\LogOutput.log`) should show `SailingTogether 1.0.0 loaded.`
 
 ## How it works
 

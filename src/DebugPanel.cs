@@ -6,11 +6,11 @@ using UnityEngine;
 namespace SailingTogether
 {
     /// <summary>
-    /// Utilitário para testar sozinho: cria remadores simulados nos assentos reais do barco
-    /// em que o jogador local está. Cada assento tem um slider -1 (S) / 0 / 1 (W).
+    /// Tool for testing alone: creates simulated rowers on the real benches of the ship the
+    /// local player is on. Each bench has a -1 (S) / 0 / 1 (W) slider.
     ///
-    /// Abrir/fechar com a tecla configurada (F8). Com o painel aberto o cursor fica livre e o
-    /// input do jogo é bloqueado; ao fechar, os valores continuam valendo (pilote pelo leme).
+    /// Open/close with the configured key (F8). While open the cursor is free and game input is
+    /// blocked; after closing, the values keep applying (steer from the helm).
     /// </summary>
     internal class DebugPanel : MonoBehaviour
     {
@@ -67,7 +67,7 @@ namespace SailingTogether
             foreach (ShipLayout.Seat seat in ShipLayout.Get(ship).Seats)
                 s_seats.Add(new SimSeat { LocalX = seat.Local.x, LocalZ = seat.Local.z });
 
-            // Barco sem bancos: dois assentos genéricos, um de cada lado.
+            // Ship without benches: two generic seats, one on each side.
             if (s_seats.Count == 0)
             {
                 s_seats.Add(new SimSeat { LocalX = -1f, LocalZ = 0f });
@@ -81,7 +81,7 @@ namespace SailingTogether
         private static string SideName(float localX)
         {
             float side = ShipAccess.SideOf(localX);
-            return side == 0f ? "Centro" : side < 0f ? "Esquerda" : "Direita";
+            return side == 0f ? "Center" : side < 0f ? "Left" : "Right";
         }
 
         private static void SetAll(float row, float side = 0f)
@@ -106,12 +106,12 @@ namespace SailingTogether
 
             if (IsOpen)
             {
-                _window = GUILayout.Window(0x5A17, _window, DrawWindow, "SailingTogether — simulador de remadores");
+                _window = GUILayout.Window(0x5A17, _window, DrawWindow, "SailingTogether — rower simulator");
             }
             else if (s_simActive && s_ship && s_seats.Any(s => s.Row != 0f))
             {
                 GUI.Label(new Rect(10f, 10f, 600f, 22f),
-                    $"SailingTogether sim: {StatusLine()}   [{SailingTogetherPlugin.DebugHotkey.Value}] painel");
+                    $"SailingTogether sim: {StatusLine()}   [{SailingTogetherPlugin.DebugHotkey.Value}] panel");
             }
         }
 
@@ -119,34 +119,34 @@ namespace SailingTogether
         {
             if (!s_ship)
             {
-                GUILayout.Label("Suba num barco para simular os assentos.");
-                if (GUILayout.Button("Fechar"))
+                GUILayout.Label("Board a ship to simulate its benches.");
+                if (GUILayout.Button("Close"))
                     IsOpen = false;
                 GUI.DragWindow();
                 return;
             }
 
-            s_simActive = GUILayout.Toggle(s_simActive, " Simulação ativa");
-            GUILayout.Label($"Barco: {Utils.GetPrefabName(s_ship.gameObject)}   Velocidade: {s_ship.GetSpeedSetting()}");
+            s_simActive = GUILayout.Toggle(s_simActive, " Simulation active");
+            GUILayout.Label($"Ship: {Utils.GetPrefabName(s_ship.gameObject)}   Speed: {s_ship.GetSpeedSetting()}");
             GUILayout.Label(StatusLine());
 
             RowingStats stats = RowingStats.Get(s_ship);
             if (stats != null && !stats.IsOwner)
-                GUILayout.Label("<color=orange>Você não é o dono do barco: a física roda em outro cliente.</color>");
+                GUILayout.Label("<color=orange>You are not the ship owner: physics runs on another client.</color>");
             else if (stats != null && !stats.Allowed)
-                GUILayout.Label("<color=orange>Remo inativo nesta velocidade (use a velocidade 1 no leme).</color>");
+                GUILayout.Label("<color=orange>Rowing inactive at this speed (set speed 1 at the helm).</color>");
 
             GUILayout.Space(6f);
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Todos W")) SetAll(1f);
-            if (GUILayout.Button("Todos S")) SetAll(-1f);
-            if (GUILayout.Button("Zerar")) SetAll(0f);
+            if (GUILayout.Button("All W")) SetAll(1f);
+            if (GUILayout.Button("All S")) SetAll(-1f);
+            if (GUILayout.Button("Reset")) SetAll(0f);
             GUILayout.EndHorizontal();
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Esq. W")) SetAll(1f, -1f);
-            if (GUILayout.Button("Dir. W")) SetAll(1f, 1f);
-            if (GUILayout.Button("Girar →")) MergeSpin(1f);
-            if (GUILayout.Button("← Girar")) MergeSpin(-1f);
+            if (GUILayout.Button("Left W")) SetAll(1f, -1f);
+            if (GUILayout.Button("Right W")) SetAll(1f, 1f);
+            if (GUILayout.Button("Spin →")) MergeSpin(1f);
+            if (GUILayout.Button("← Spin")) MergeSpin(-1f);
             GUILayout.EndHorizontal();
 
             GUILayout.Space(6f);
@@ -163,11 +163,11 @@ namespace SailingTogether
             }
 
             GUILayout.Space(6f);
-            GUILayout.Label($"[{SailingTogetherPlugin.DebugHotkey.Value}] fecha o painel (os valores continuam valendo).");
+            GUILayout.Label($"[{SailingTogetherPlugin.DebugHotkey.Value}] closes the panel (values keep applying).");
             GUI.DragWindow();
         }
 
-        // Girar no próprio eixo: um lado W e o outro S. dir = +1 gira para a direita.
+        // Spin in place: one side W and the other S. dir = +1 spins right.
         private static void MergeSpin(float dir)
         {
             foreach (SimSeat seat in s_seats)
@@ -181,13 +181,13 @@ namespace SailingTogether
         {
             RowingStats stats = RowingStats.Get(s_ship);
             if (stats == null)
-                return "sem dados";
-            return $"remadores {stats.Rowers}  empurrão {stats.Thrust:+0.0;-0.0;0}  giro {stats.Turn:+0.0;-0.0;0}  " +
-                   $"vel {s_ship.GetSpeed():0.0} m/s  yaw {stats.YawRate:+0;-0;0}°/s  {(stats.Applied ? "APLICANDO" : "parado")}";
+                return "no data";
+            return $"rowers {stats.Rowers}  thrust {stats.Thrust:+0.0;-0.0;0}  turn {stats.Turn:+0.0;-0.0;0}  " +
+                   $"speed {s_ship.GetSpeed():0.0} m/s  yaw {stats.YawRate:+0;-0;0}°/s  {(stats.Applied ? "APPLYING" : "idle")}";
         }
     }
 
-    // Com o painel aberto: cursor livre e sem input no personagem/câmera.
+    // While the panel is open: free cursor and no character/camera input.
     [HarmonyPatch(typeof(GameCamera), nameof(GameCamera.UpdateMouseCapture))]
     internal static class GameCamera_UpdateMouseCapture_Patch
     {
