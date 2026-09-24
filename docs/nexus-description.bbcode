@@ -1,0 +1,57 @@
+[center][img]https://raw.githubusercontent.com/chrystianfarias/SailingTogether/main/docs/cover.jpg[/img][/center]
+
+[size=5][b]SailingTogether — cooperative rowing[/b][/size]
+
+In vanilla Valheim only the player at the helm can move the ship. With [b]SailingTogether[/b], every player [b]sitting on a ship bench[/b] can row with [b]W[/b] (forward) and [b]S[/b] (backward) instead of standing up. [b]Jump[/b] still stands you up.
+
+[size=4][b]Requirements[/b][/size]
+[list]
+[*][b]BepInEx is required[/b] — install [url=https://thunderstore.io/c/valheim/p/denikson/BepInExPack_Valheim/]BepInExPack Valheim[/url] (5.4.x) before this mod.
+[*][b]Every player on the ship must have the mod installed.[/b]
+[/list]
+
+[size=4][b]How it works[/b][/size]
+[list]
+[*]Rowing works at [b]speed 1 (oars)[/b] and in reverse. Optionally also while stopped ([i]RowInStop[/i]), which allows rowing with nobody at the helm.
+[*]Each rower pushes on the side of the ship they are sitting on:
+[/list]
+[code]
+ Left | Right | Result
+------+-------+----------------------------
+  W   |   W   | straight, faster
+  W   |   -   | turns right
+  -   |   W   | turns left
+  W   |   S   | spins in place to the right
+  S   |   S   | brakes / goes backward
+[/code]
+[list]
+[*]The helmsman keeps full control of speed and rudder; the rowers' force is added on top.
+[/list]
+
+[size=4][b]Ship HUD[/b][/size]
+A top-down view of the ship, built from the game's own icons:
+[list]
+[*][b]Helmsman:[/b] every bench, who is sitting, and each rower's direction.
+[*][b]Rower:[/b] only your own bench and your rowing direction.
+[*]Animated oars that sway like the vanilla helm oar, and green/red arrows outside the hull.
+[/list]
+
+[size=4][b]Installation[/b][/size]
+[list]
+[*][b]Vortex:[/b] install the main file with Vortex.
+[*][b]Manual:[/b] extract the zip into the Valheim folder. It contains [i]BepInEx/plugins/SailingTogether/SailingTogether.dll[/i].
+[/list]
+
+[size=4][b]Configuration[/b][/size]
+[i]BepInEx/config/farias.SailingTogether.cfg[/i] (created on first run): rowing power, turn rate, center dead zone, rowing while stopped / in reverse, HUD scale and position, and an optional debug simulator (F8, disabled by default) for testing alone.
+
+[size=4][b]Links[/b][/size]
+[list]
+[*]Source code: [url=https://github.com/chrystianfarias/SailingTogether]github.com/chrystianfarias/SailingTogether[/url]
+[*]Support me: [url=https://buymeacoffee.com/chrystianfarias]buymeacoffee.com/chrystianfarias[/url]
+[/list]
+
+[size=4][b]License[/b][/size]
+SailingTogether — Copyright (c) 2025 Chrystian Farias. Licensed under [url=https://creativecommons.org/licenses/by-nc/4.0/]CC BY-NC 4.0[/url] (non-commercial use only).
+BepInEx is licensed under [url=https://github.com/BepInEx/BepInEx/blob/master/LICENSE]LGPL-2.1[/url] and is not included; it must be installed separately.
+Valheim is the property of Iron Gate AB. This mod is not affiliated with or endorsed by Iron Gate or Coffee Stain.

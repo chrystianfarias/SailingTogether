@@ -14,6 +14,12 @@
     <BepInExPath>$(GamePath)\BepInEx</BepInExPath>
     <!-- Copia a DLL para BepInEx\plugins após o build -->
     <DeployToGame Condition="'$(DeployToGame)' == ''">true</DeployToGame>
+
+    <!-- Release: manter igual a SailingTogetherPlugin.ModVersion (o target Package confere) -->
+    <Version>1.0.0</Version>
+    <RepoUrl>https://github.com/chrystianfarias/SailingTogether</RepoUrl>
+    <BepInExPackDependency>denikson-BepInExPack_Valheim-5.4.2351</BepInExPackDependency>
+    <ThunderstoreDescription>Cooperative rowing: players seated on ship benches row with W/S. Each side pushes independently, so the crew can steer and spin the ship. Includes a top-down ship HUD.</ThunderstoreDescription>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,6 +44,52 @@
     <MakeDir Directories="$(BepInExPath)\plugins\SailingTogether" />
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(BepInExPath)\plugins\SailingTogether" />
     <Message Importance="high" Text="SailingTogether -> $(BepInExPath)\plugins\SailingTogether" />
+  </Target>
+
+  <!--
+    Pacotes de release em dist\:
+      SailingTogether-<ver>-thunderstore.zip  (Thunderstore / r2modman)
+      SailingTogether-<ver>.zip               (GitHub Releases / Nexus Mods / manual)
+    Uso: dotnet build -c Release -t:Package
+  -->
+  <Target Name="Package" DependsOnTargets="Build">
+    <PropertyGroup>
+      <PluginSource>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\src\SailingTogetherPlugin.cs'))</PluginSource>
+      <StagingDir>$(BaseIntermediateOutputPath)package\</StagingDir>
+      <TsDir>$(StagingDir)thunderstore\</TsDir>
+      <ManualDir>$(StagingDir)manual\</ManualDir>
+      <DistDir>$(MSBuildProjectDirectory)\dist\</DistDir>
+      <RawBase>$(RepoUrl.Replace('https://github.com/', 'https://raw.githubusercontent.com/'))/main</RawBase>
+      <!-- Thunderstore não resolve links relativos do README -->
+      <TsReadme>$([System.IO.File]::ReadAllText('$(MSBuildProjectDirectory)\README.md').Replace('](docs/', ']($(RawBase)/docs/').Replace('](LICENSE)', ']($(RepoUrl)/blob/main/LICENSE)').Replace('](#multiplayer)', ']($(RepoUrl)#multiplayer)'))</TsReadme>
+    </PropertyGroup>
+
+    <Error Condition="!$(PluginSource.Contains('ModVersion = &quot;$(Version)&quot;'))"
+           Text="Versão divergente: o csproj diz $(Version), mas SailingTogetherPlugin.ModVersion é outra." />
+
+    <RemoveDir Directories="$(StagingDir)" />
+    <MakeDir Directories="$(TsDir)plugins;$(ManualDir)BepInEx\plugins\SailingTogether;$(DistDir)" />
+
+    <!-- Thunderstore -->
+    <WriteLinesToFile File="$(TsDir)manifest.json" Overwrite="true" Lines="{;
+  &quot;name&quot;: &quot;$(AssemblyName)&quot;,;
+  &quot;version_number&quot;: &quot;$(Version)&quot;,;
+  &quot;website_url&quot;: &quot;$(RepoUrl)&quot;,;
+  &quot;description&quot;: &quot;$(ThunderstoreDescription)&quot;,;
+  &quot;dependencies&quot;: [ &quot;$(BepInExPackDependency)&quot; ];
+}" />
+    <WriteLinesToFile File="$(TsDir)README.md" Overwrite="true" Lines="$([MSBuild]::Escape($(TsReadme)))" />
+    <Copy SourceFiles="package\icon.png;CHANGELOG.md;LICENSE" DestinationFolder="$(TsDir)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TsDir)plugins" />
+
+    <!-- Manual / GitHub / Nexus -->
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ManualDir)BepInEx\plugins\SailingTogether" />
+    <Copy SourceFiles="README.md;CHANGELOG.md;LICENSE" DestinationFolder="$(ManualDir)BepInEx\plugins\SailingTogether" />
+
+    <Delete Files="$(DistDir)$(AssemblyName)-$(Version)-thunderstore.zip;$(DistDir)$(AssemblyName)-$(Version).zip" />
+    <ZipDirectory SourceDirectory="$(TsDir)" DestinationFile="$(DistDir)$(AssemblyName)-$(Version)-thunderstore.zip" />
+    <ZipDirectory SourceDirectory="$(ManualDir)" DestinationFile="$(DistDir)$(AssemblyName)-$(Version).zip" />
+    <Message Importance="high" Text="Pacotes gerados em $(DistDir)" />
   </Target>
 
 </Project>

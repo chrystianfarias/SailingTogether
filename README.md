@@ -17,9 +17,17 @@ In vanilla, only the player at the helm can move the ship. With SailingTogether,
 
 ## Installation
 
+**Thunderstore / r2modman (recommended):** install *SailingTogether* from the mod manager —
+BepInExPack Valheim is installed automatically as a dependency.
+
+**Nexus Mods / Vortex:** download the main file and install it with Vortex (BepInEx must already be installed).
+
+**Manual:**
+
 1. Install **BepInExPack Valheim** and run the game once, so the `BepInEx` folder is created.
-2. Copy `SailingTogether.dll` to `<Valheim>\BepInEx\plugins\SailingTogether\`.
-3. Start the game. The log (`BepInEx\LogOutput.log`) should show `SailingTogether ... carregado.`
+2. Download `SailingTogether-<version>.zip` from [Releases](https://github.com/chrystianfarias/SailingTogether/releases)
+   and extract it into the Valheim folder (it contains `BepInEx/plugins/SailingTogether/SailingTogether.dll`).
+3. Start the game. The log (`BepInEx\LogOutput.log`) should show `SailingTogether 1.0.0 carregado.`
 
 ## How it works
 
@@ -109,6 +117,20 @@ dotnet build -c Release -p:GamePath="C:\Path\To\Valheim"
 
 The DLL is copied to `<Valheim>\BepInEx\plugins\SailingTogether\` after the build.
 Use `-p:DeployToGame=false` to skip copying.
+
+To build the release packages into `dist/`:
+
+```
+dotnet build -c Release -t:Package -p:DeployToGame=false
+```
+
+| File | For |
+|---|---|
+| `SailingTogether-<version>-thunderstore.zip` | Thunderstore / r2modman |
+| `SailingTogether-<version>.zip` | GitHub Releases, Nexus Mods, manual install |
+
+The version lives in `SailingTogether.csproj` (`<Version>`) and must match
+`SailingTogetherPlugin.ModVersion` — the `Package` target fails if they differ.
 
 ## Support
 

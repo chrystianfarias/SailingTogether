@@ -9,7 +9,7 @@ namespace SailingTogether
     {
         public const string ModGuid = "farias.SailingTogether";
         public const string ModName = "SailingTogether";
-        public const string ModVersion = "0.1.0";
+        public const string ModVersion = "1.0.0";
 
         internal static ConfigEntry<bool> Enabled;
         internal static ConfigEntry<float> PowerPerRower;
