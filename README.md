@@ -1,5 +1,7 @@
 # SailingTogether
 
+![SailingTogether](docs/cover.jpg)
+
 A [BepInEx](https://github.com/BepInEx/BepInEx) mod for **Valheim** that adds **cooperative rowing**.
 In vanilla, only the player at the helm can move the ship. With SailingTogether, every player
 **sitting on a ship bench** can row with **W** (forward) and **S** (backward) instead of standing up.
